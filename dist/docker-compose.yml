@@ -1,0 +1,19 @@
+services:
+  inwonerportaal:
+    image: vs-inwonerportaal:0.1.0
+    container_name: vs-inwonerportaal
+    environment:
+      SERVER_PORT: "10040"
+      SPRING_PROFILES_ACTIVE: "stub"
+    networks:
+      - gatekeeper
+    restart: unless-stopped
+    # Geen host-portmapping: de container is uitsluitend bereikbaar via de gatekeeper
+    # op het gedeelde netwerk, op hostnaam vs-inwonerportaal poort 10040.
+
+# Sluit aan op het bestaande (externe) netwerk van de gatekeeper-stack.
+# Dit netwerk moet al bestaan op de doel-VM (aangemaakt door de verius-gatekeeper compose-stack).
+networks:
+  gatekeeper:
+    external: true
+    name: verius-gatekeeper_gatekeeper

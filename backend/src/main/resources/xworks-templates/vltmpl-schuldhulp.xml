@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gesimuleerde X-Works wiz-vltmpl00-getocc respons: aanmelding schuldhulpverlening. -->
+<vragenlijsttemplate type="schuldhulp" titel="Aanmelding schuldhulpverlening" administration="opmr">
+  <pagina volgorde="1" naam="Situatie">
+    <vraag id="woonsituatie" label="Woonsituatie" type="keuze" verplicht="true">
+      <optie>Huurwoning</optie>
+      <optie>Koopwoning</optie>
+      <optie>Inwonend</optie>
+      <optie>Anders</optie>
+    </vraag>
+    <vraag id="toelichtingWonen" label="Toelichting woonsituatie" type="tekst"
+           verplicht="true" zichtbaarAls="woonsituatie==Anders"/>
+    <vraag id="loonbeslag" label="Is er loonbeslag gelegd?" type="keuze" verplicht="true">
+      <optie>Ja</optie>
+      <optie>Nee</optie>
+    </vraag>
+  </pagina>
+  <pagina volgorde="2" naam="Schulden">
+    <vraag id="schulden" label="Schuldeisers" type="groep" verplicht="true">
+      <vraag id="schuldeiser" label="Schuldeiser" type="tekst" verplicht="true"/>
+      <vraag id="bedrag" label="Openstaand bedrag (€)" type="bedrag" verplicht="true"/>
+    </vraag>
+  </pagina>
+</vragenlijsttemplate>

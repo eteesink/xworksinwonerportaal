@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gesimuleerde X-Works wiz-vltmpl00-getocc respons: kwijtschelding gemeentelijke belastingen. -->
+<vragenlijsttemplate type="kwijtschelding" titel="Kwijtschelding gemeentelijke belastingen" administration="opmr">
+  <pagina volgorde="1" naam="Aanslag">
+    <vraag id="belastingsoort" label="Soort belasting" type="keuze" verplicht="true">
+      <optie>Afvalstoffenheffing</optie>
+      <optie>Rioolheffing</optie>
+      <optie>Hondenbelasting</optie>
+    </vraag>
+    <vraag id="aanslagnummer" label="Aanslagnummer" type="tekst" verplicht="true"/>
+  </pagina>
+  <pagina volgorde="2" naam="Inkomen en vermogen">
+    <vraag id="nettoMaandinkomen" label="Netto maandinkomen (€)" type="bedrag" verplicht="true"/>
+    <vraag id="heeftVermogen" label="Heeft u spaargeld of vermogen?" type="keuze" verplicht="true">
+      <optie>Ja</optie>
+      <optie>Nee</optie>
+    </vraag>
+    <vraag id="vermogenBedrag" label="Vermogen (€)" type="bedrag"
+           verplicht="true" zichtbaarAls="heeftVermogen==Ja"/>
+  </pagina>
+</vragenlijsttemplate>

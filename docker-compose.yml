@@ -1,0 +1,16 @@
+services:
+  inwonerportaal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vs-inwonerportaal:0.1.0
+    container_name: vs-inwonerportaal
+    ports:
+      - "10040:10040"
+    environment:
+      SERVER_PORT: "10040"
+      # 'stub' vangt de X-Works ACL af met in-memory testdata.
+      # Zet op 'xworks' zodra de echte koppeling is gebouwd (en geef dan de
+      # X-Works endpoint-config mee via extra environment-variabelen).
+      SPRING_PROFILES_ACTIVE: "stub"
+    restart: unless-stopped

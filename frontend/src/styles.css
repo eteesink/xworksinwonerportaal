@@ -1,0 +1,283 @@
+:root {
+  /* Stipter-huisstijl (afgeleid van het logo op www.stipter.nl) */
+  --stipter-blauw: #1a405a;
+  --stipter-blauw-donker: #122e40;
+  --stipter-groen: #77b31d;
+  --stipter-groen-donker: #688f23;
+
+  --kleur-bg: #f4f6f8;
+  --kleur-kaart: #ffffff;
+  --kleur-rand: #d7dde3;
+  --kleur-tekst: #1c2b36;
+  --kleur-muted: #5b6b78;
+  --kleur-fout: #b3261e;
+  --kleur-ok: #2e7d32;
+
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  color: var(--kleur-tekst);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--kleur-bg);
+}
+
+/* Topbar met logo */
+.topbar {
+  background: var(--kleur-kaart);
+  border-bottom: 1px solid var(--kleur-rand);
+  box-shadow: 0 1px 3px rgba(26, 64, 90, 0.06);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.topbar .logo {
+  height: 38px;
+  width: auto;
+  display: block;
+}
+
+.topbar .appnaam {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--stipter-blauw);
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--kleur-rand);
+}
+
+.topbar .burger {
+  font-size: 0.85rem;
+  color: var(--kleur-muted);
+}
+
+.topbar .burger::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--stipter-groen);
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.layout {
+  max-width: 920px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--kleur-rand);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--kleur-muted);
+  border-bottom: 3px solid transparent;
+}
+
+.tabs button:hover {
+  color: var(--stipter-blauw);
+}
+
+.tabs button.actief {
+  color: var(--stipter-blauw);
+  border-bottom-color: var(--stipter-groen);
+  font-weight: 600;
+}
+
+/* Kaarten */
+.kaart {
+  background: var(--kleur-kaart);
+  border: 1px solid var(--kleur-rand);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(26, 64, 90, 0.05);
+}
+
+.kaart h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: var(--stipter-blauw);
+  border-left: 4px solid var(--stipter-groen);
+  padding-left: 0.6rem;
+}
+
+.kaart h3 {
+  color: var(--stipter-blauw);
+}
+
+.rij {
+  display: flex;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #eef1f4;
+}
+
+.rij:last-child {
+  border-bottom: none;
+}
+
+.rij .label {
+  width: 220px;
+  color: var(--kleur-muted);
+  flex-shrink: 0;
+}
+
+/* Formuliervelden */
+.veld {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
+}
+
+.veld label {
+  font-size: 0.85rem;
+  color: var(--kleur-muted);
+}
+
+.veld input,
+.veld select,
+table input {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--kleur-rand);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #fff;
+}
+
+.veld input:focus,
+.veld select:focus,
+table input:focus {
+  outline: none;
+  border-color: var(--stipter-blauw);
+  box-shadow: 0 0 0 3px rgba(119, 179, 29, 0.2);
+}
+
+/* Knoppen */
+button.primair,
+button {
+  font-family: inherit;
+}
+
+button.primair {
+  background: var(--stipter-blauw);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button.primair:hover {
+  background: var(--stipter-blauw-donker);
+}
+
+button.primair:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* secundaire/standaard knoppen */
+.layout button:not(.primair) {
+  background: #fff;
+  border: 1px solid var(--kleur-rand);
+  border-radius: 6px;
+  padding: 0.55rem 1rem;
+  font-size: 0.92rem;
+  color: var(--stipter-blauw);
+  cursor: pointer;
+}
+
+.layout button:not(.primair):hover {
+  border-color: var(--stipter-blauw);
+}
+
+/* Tabellen */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  margin-bottom: 0.75rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid #eef1f4;
+}
+
+th {
+  color: var(--kleur-muted);
+  font-weight: 600;
+}
+
+/* Meldingen */
+.melding {
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border-left: 4px solid transparent;
+}
+
+.melding.ok {
+  background: #eef7ec;
+  color: var(--kleur-ok);
+  border-left-color: var(--stipter-groen);
+}
+
+.melding.fout {
+  background: #fdecea;
+  color: var(--kleur-fout);
+  border-left-color: var(--kleur-fout);
+}
+
+.muted {
+  color: var(--kleur-muted);
+  font-size: 0.85rem;
+}
+
+/* Footer */
+.footer {
+  max-width: 920px;
+  margin: 1.5rem auto 2.5rem;
+  padding: 0 1rem;
+  color: var(--kleur-muted);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer .punt {
+  color: var(--stipter-groen);
+  font-weight: 700;
+}

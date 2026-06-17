@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 420" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="p" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1a405a"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="980" height="420" fill="#f4f6f8"/>
+  <text x="30" y="38" font-size="20" font-weight="700" fill="#1a405a">DigiD-aanmelding via broker — volledig in de nieuwe voorkant</text>
+  <text x="30" y="60" font-size="13" fill="#5b6b78">X-Works is niet betrokken bij de authenticatie; de BFF ontvangt alleen de geverifieerde BSN.</text>
+
+  <!-- actors -->
+  <rect x="30"  y="110" width="140" height="60" rx="8" fill="#1a405a"/>
+  <text x="100" y="146" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Burger + SPA</text>
+
+  <rect x="270" y="110" width="160" height="60" rx="8" fill="#fff" stroke="#1a405a" stroke-width="2"/>
+  <text x="350" y="140" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">Spring BFF</text>
+  <text x="350" y="158" font-size="11" fill="#5b6b78" text-anchor="middle">OIDC-client (SP)</text>
+
+  <rect x="540" y="110" width="160" height="60" rx="8" fill="#fff" stroke="#77b31d" stroke-width="2"/>
+  <text x="620" y="140" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">DigiD-broker</text>
+  <text x="620" y="158" font-size="11" fill="#5b6b78" text-anchor="middle">OIDC ↔ SAML</text>
+
+  <rect x="810" y="110" width="140" height="60" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="880" y="140" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">Logius DigiD</text>
+
+  <!-- flow arrows -->
+  <line x1="170" y1="130" x2="268" y2="130" stroke="#1a405a" stroke-width="1.5" marker-end="url(#p)"/>
+  <text x="219" y="122" font-size="10" fill="#5b6b78" text-anchor="middle">1 · inloggen</text>
+
+  <line x1="430" y1="130" x2="538" y2="130" stroke="#1a405a" stroke-width="1.5" marker-end="url(#p)"/>
+  <text x="484" y="122" font-size="10" fill="#5b6b78" text-anchor="middle">2 · redirect (OIDC)</text>
+
+  <line x1="700" y1="130" x2="808" y2="130" stroke="#1a405a" stroke-width="1.5" marker-end="url(#p)"/>
+  <text x="754" y="122" font-size="10" fill="#5b6b78" text-anchor="middle">3 · SAML AuthnRequest</text>
+
+  <line x1="808" y1="152" x2="702" y2="152" stroke="#1a405a" stroke-width="1.5" marker-end="url(#p)"/>
+  <text x="754" y="166" font-size="10" fill="#5b6b78" text-anchor="middle">4 · BSN/assertion</text>
+
+  <line x1="538" y1="152" x2="432" y2="152" stroke="#1a405a" stroke-width="1.5" marker-end="url(#p)"/>
+  <text x="484" y="166" font-size="10" fill="#5b6b78" text-anchor="middle">5 · id_token (BSN)</text>
+
+  <line x1="268" y1="152" x2="172" y2="152" stroke="#1a405a" stroke-width="1.5" marker-end="url(#p)"/>
+  <text x="219" y="166" font-size="10" fill="#5b6b78" text-anchor="middle">6 · cookie-sessie</text>
+
+  <!-- session box -->
+  <rect x="270" y="230" width="160" height="80" rx="8" fill="#eef2f5" stroke="#d7dde3"/>
+  <text x="350" y="256" font-size="12" font-weight="700" fill="#1a405a" text-anchor="middle">Sessie in BFF</text>
+  <text x="350" y="276" font-size="11" fill="#5b6b78" text-anchor="middle">BSN + assurance-niveau</text>
+  <text x="350" y="293" font-size="11" fill="#5b6b78" text-anchor="middle">httpOnly cookie</text>
+  <line x1="350" y1="170" x2="350" y2="228" stroke="#1a405a" stroke-width="1.2" marker-end="url(#p)"/>
+
+  <!-- X-Works calls -->
+  <rect x="540" y="230" width="410" height="80" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="745" y="256" font-size="12" font-weight="700" fill="#1a405a" text-anchor="middle">Elke X-Works-call (via ACL)</text>
+  <text x="745" y="276" font-size="11" fill="#5b6b78" text-anchor="middle">BSN uit de sessie wordt meegegeven aan de servicelaag</text>
+  <text x="745" y="293" font-size="11" fill="#5b6b78" text-anchor="middle">X-Works scope't op PERSOON.NM_BSN — geen DigiD in X-Works</text>
+  <line x1="430" y1="270" x2="538" y2="270" stroke="#77b31d" stroke-width="2" marker-end="url(#p)"/>
+
+  <text x="30" y="380" font-size="12" fill="#1a405a" font-weight="700">Conclusie: ja — DigiD kan volledig in de nieuwe voorkant (BFF als SP/OIDC-client via broker).</text>
+  <text x="30" y="400" font-size="11" fill="#5b6b78">X-Works hoeft de SAML-rol (huidige samlp-module) niet meer te vervullen; het ontvangt enkel de geverifieerde BSN per service-call.</text>
+</svg>

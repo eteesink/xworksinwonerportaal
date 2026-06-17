@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gesimuleerde X-Works wiz-vltmpl00-getocc respons: aanvraag Wmo-voorziening. -->
+<vragenlijsttemplate type="wmo-voorziening" titel="Aanvraag Wmo-voorziening" administration="opmr">
+  <pagina volgorde="1" naam="Voorziening">
+    <vraag id="soortVoorziening" label="Soort voorziening" type="keuze" verplicht="true">
+      <optie>Rolstoel</optie>
+      <optie>Woningaanpassing</optie>
+      <optie>Vervoersvoorziening</optie>
+      <optie>Hulp bij het huishouden</optie>
+      <optie>Anders</optie>
+    </vraag>
+    <vraag id="toelichtingAnders" label="Toelichting (bij 'Anders')" type="tekst"
+           verplicht="true" zichtbaarAls="soortVoorziening==Anders"/>
+    <vraag id="ervarenBeperking" label="Welke beperking ervaart u?" type="tekst" verplicht="true"/>
+    <vraag id="gewensteIngangsdatum" label="Gewenste ingangsdatum" type="datum" verplicht="false"/>
+  </pagina>
+</vragenlijsttemplate>

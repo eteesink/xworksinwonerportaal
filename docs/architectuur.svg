@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="pijl" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1a405a"/>
+    </marker>
+    <marker id="pijlgroen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#77b31d"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="980" height="660" fill="#f4f6f8"/>
+  <text x="30" y="40" font-size="22" font-weight="700" fill="#1a405a">Inwonerportaal — architectuur</text>
+  <text x="30" y="62" font-size="13" fill="#5b6b78">Moderne voorkant (React + Spring BFF) gekoppeld aan X-Works via één anti-corruption layer</text>
+
+  <!-- DigiD band (boven) -->
+  <rect x="360" y="90" width="180" height="64" rx="8" fill="#fff" stroke="#77b31d" stroke-width="2"/>
+  <text x="450" y="116" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">DigiD-broker</text>
+  <text x="450" y="135" font-size="11" fill="#5b6b78" text-anchor="middle">OIDC  ↔  SAML</text>
+
+  <rect x="580" y="90" width="160" height="64" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="660" y="116" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">Logius DigiD</text>
+  <text x="660" y="135" font-size="11" fill="#5b6b78" text-anchor="middle">identiteit / BSN</text>
+
+  <line x1="540" y1="122" x2="578" y2="122" stroke="#1a405a" stroke-width="1.5" marker-end="url(#pijl)"/>
+
+  <!-- Burger -->
+  <rect x="30" y="300" width="120" height="80" rx="8" fill="#1a405a"/>
+  <text x="90" y="335" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Burger</text>
+  <text x="90" y="354" font-size="11" fill="#cdd7df" text-anchor="middle">browser</text>
+
+  <!-- React SPA -->
+  <rect x="190" y="290" width="160" height="100" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="270" y="318" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">React SPA</text>
+  <text x="270" y="338" font-size="11" fill="#5b6b78" text-anchor="middle">TypeScript / Vite</text>
+  <text x="270" y="356" font-size="11" fill="#5b6b78" text-anchor="middle">inzage · formulieren</text>
+  <text x="270" y="372" font-size="11" fill="#5b6b78" text-anchor="middle">(geen tokens/BSN)</text>
+
+  <!-- BFF -->
+  <rect x="390" y="220" width="260" height="250" rx="10" fill="#fff" stroke="#1a405a" stroke-width="2"/>
+  <text x="520" y="245" font-size="14" font-weight="700" fill="#1a405a" text-anchor="middle">Spring Boot BFF  ·  :10040</text>
+
+  <rect x="410" y="262" width="220" height="38" rx="6" fill="#eef2f5"/>
+  <text x="520" y="286" font-size="12" fill="#1a405a" text-anchor="middle">REST API  /api/**</text>
+
+  <rect x="410" y="308" width="220" height="38" rx="6" fill="#eef2f5"/>
+  <text x="520" y="332" font-size="12" fill="#1a405a" text-anchor="middle">DigiD-sessie (BSN)  ·  autorisatie · audit</text>
+
+  <rect x="410" y="354" width="220" height="38" rx="6" fill="#eef2f5"/>
+  <text x="520" y="378" font-size="12" fill="#1a405a" text-anchor="middle">InwonerService</text>
+
+  <rect x="410" y="400" width="220" height="46" rx="6" fill="#1a405a"/>
+  <text x="520" y="421" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">XworksClient — ACL</text>
+  <text x="520" y="437" font-size="10.5" fill="#9fd14a" text-anchor="middle">de enige poort naar X-Works</text>
+
+  <!-- X-Works servicelaag -->
+  <rect x="700" y="250" width="250" height="90" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="825" y="278" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">X-Works servicelaag</text>
+  <text x="825" y="298" font-size="11" fill="#5b6b78" text-anchor="middle">xws (SOAP) · StUF</text>
+  <text x="825" y="315" font-size="11" fill="#5b6b78" text-anchor="middle">ZDS / BG / DCR · wiz/lsd-operaties</text>
+
+  <!-- X-Works / Uniface + DB -->
+  <rect x="700" y="380" width="250" height="90" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="825" y="408" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">X-Works / Uniface 9</text>
+  <text x="825" y="428" font-size="11" fill="#5b6b78" text-anchor="middle">business-logica · validatie · sleutels</text>
+  <text x="825" y="445" font-size="11" fill="#5b6b78" text-anchor="middle">DB per gemeente</text>
+
+  <!-- Gemeentemedewerker -->
+  <rect x="700" y="520" width="250" height="64" rx="8" fill="#fff" stroke="#d7dde3"/>
+  <text x="825" y="546" font-size="13" font-weight="700" fill="#1a405a" text-anchor="middle">Gemeente-medewerker</text>
+  <text x="825" y="565" font-size="11" fill="#5b6b78" text-anchor="middle">ziet ingevoerde gegevens in X-Works</text>
+
+  <!-- Arrows main flow -->
+  <line x1="150" y1="340" x2="188" y2="340" stroke="#1a405a" stroke-width="1.5" marker-end="url(#pijl)"/>
+  <text x="169" y="332" font-size="9.5" fill="#5b6b78" text-anchor="middle">HTTPS</text>
+
+  <line x1="350" y1="340" x2="388" y2="340" stroke="#1a405a" stroke-width="1.5" marker-end="url(#pijl)"/>
+  <text x="369" y="332" font-size="9.5" fill="#5b6b78" text-anchor="middle">REST</text>
+  <text x="369" y="354" font-size="9.5" fill="#5b6b78" text-anchor="middle">cookie</text>
+
+  <line x1="650" y1="423" x2="699" y2="320" stroke="#77b31d" stroke-width="2" marker-end="url(#pijlgroen)"/>
+  <text x="690" y="380" font-size="9.5" fill="#688f23" text-anchor="middle">SOAP/StUF</text>
+
+  <line x1="825" y1="340" x2="825" y2="378" stroke="#1a405a" stroke-width="1.5" marker-end="url(#pijl)"/>
+  <line x1="825" y1="518" x2="825" y2="472" stroke="#1a405a" stroke-width="1.5" marker-end="url(#pijl)"/>
+
+  <!-- BFF -> DigiD broker -->
+  <line x1="470" y1="220" x2="455" y2="156" stroke="#77b31d" stroke-width="2" marker-end="url(#pijlgroen)"/>
+  <text x="500" y="190" font-size="9.5" fill="#688f23" text-anchor="middle">OIDC login</text>
+
+  <!-- legend -->
+  <text x="30" y="620" font-size="11" fill="#5b6b78">Principe: het portaal schrijft nooit rechtstreeks naar de Uniface-DB — alle lees/schrijf-acties lopen via de ACL en de X-Works servicelaag.</text>
+  <text x="30" y="638" font-size="11" fill="#5b6b78">Daardoor blijven validatie, sleutelgeneratie en concurrency in X-Works, en ziet de gemeente de door de burger ingevoerde gegevens automatisch.</text>
+</svg>

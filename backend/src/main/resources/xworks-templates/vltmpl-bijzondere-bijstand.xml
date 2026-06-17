@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Gesimuleerde respons van de X-Works operatie wiz-vltmpl00-getocc.
+
+  Dit is een vereenvoudigde projectie van de X-Works template-structuur
+  (VRAGENLIJSTTEMPLATE -> VRAGENLIJSTTEMPLATE_PAGINA / PAGINA -> vraagboom/svraag).
+  In de echte koppeling komt dit document uit X-Works (per ADMINISTRATION/gemeente);
+  hier dient het als testbron zodat de mapper en de fetch-seam aantoonbaar werken.
+
+  De exacte veldnamen volgen uit het echte getocc-contract; de structuur (pagina's
+  met vragen, keuzeopties, conditionele zichtbaarheid en herhaalbare groepen) is leidend.
+-->
+<vragenlijsttemplate type="bijzondere-bijstand" titel="Aanvraag bijzondere bijstand" administration="opmr">
+  <pagina volgorde="1" naam="Kosten">
+    <vraag id="soortKosten" label="Soort kosten" type="keuze" verplicht="true">
+      <optie>Woninginrichting</optie>
+      <optie>Medische kosten</optie>
+      <optie>Anders</optie>
+    </vraag>
+    <vraag id="toelichtingAnders" label="Toelichting (bij 'Anders')" type="tekst"
+           verplicht="true" zichtbaarAls="soortKosten==Anders"/>
+    <vraag id="kostenposten" label="Kostenposten" type="groep" verplicht="true">
+      <vraag id="omschrijving" label="Omschrijving" type="tekst" verplicht="true"/>
+      <vraag id="bedrag" label="Bedrag (€)" type="bedrag" verplicht="true"/>
+    </vraag>
+  </pagina>
+</vragenlijsttemplate>

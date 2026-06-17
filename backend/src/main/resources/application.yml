@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: inwonerportaal-backend
+  profiles:
+    # 'stub' vangt de X-Works ACL af met in-memory testdata.
+    # Zet op 'xworks' zodra de echte koppeling is gebouwd.
+    active: stub
+
+server:
+  port: ${SERVER_PORT:8080}
+
+inwonerportaal:
+  # Origin van de React dev-server (CORS).
+  frontend-origin: http://localhost:5173
+  # Tijdelijke demo-BSN tot DigiD is aangesloten (Logius-testpersoon).
+  demo-bsn: "999993653"
+
+logging:
+  level:
+    nl.verius.inwonerportaal: INFO
