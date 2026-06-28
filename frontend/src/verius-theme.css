@@ -1,0 +1,42 @@
+/*
+ * Verius-thema bovenop NL Design System (Utrecht white-label).
+ * Overschrijft de relevante --utrecht-*-tokens met de Verius-huisstijl. Niet-bestaande
+ * tokens zijn no-ops, dus de set mag ruim zijn. Exacte waarden later vervangen door de
+ * token-export van de designers (zie docs/design/verius-design-system.md §10/§11).
+ */
+.utrecht-theme {
+  /* Merk-kleuren */
+  --verius-groen: #12302a;
+  --verius-groen-700: #1c3f36;
+  --verius-oranje: #e0600f;
+
+  /* Document */
+  --utrecht-document-background-color: #ffffff;
+  --utrecht-document-color: #1a1a1a;
+
+  /* Primaire knop = Verius donkergroen */
+  --utrecht-button-primary-action-background-color: var(--verius-groen);
+  --utrecht-button-primary-action-color: #ffffff;
+  --utrecht-button-primary-action-border-color: var(--verius-groen);
+  --utrecht-button-primary-action-hover-background-color: var(--verius-groen-700);
+  --utrecht-button-primary-action-hover-border-color: var(--verius-groen-700);
+  --utrecht-button-primary-action-active-background-color: var(--verius-groen-700);
+  --utrecht-button-primary-action-active-border-color: var(--verius-groen-700);
+  --utrecht-button-primary-action-active-color: #ffffff;
+
+  /* Secundaire knop: groene rand/tekst op wit */
+  --utrecht-button-secondary-action-color: var(--verius-groen);
+  --utrecht-button-secondary-action-border-color: var(--verius-groen);
+  --utrecht-button-secondary-action-hover-background-color: #f0f3f1;
+  --utrecht-button-secondary-action-hover-border-color: var(--verius-groen-700);
+  --utrecht-button-secondary-action-hover-color: var(--verius-groen-700);
+
+  /* Links */
+  --utrecht-link-color: var(--verius-groen);
+  --utrecht-link-hover-color: var(--verius-groen-700);
+  --utrecht-link-active-color: var(--verius-groen-700);
+  --utrecht-link-visited-color: var(--verius-groen);
+
+  /* Focus = zichtbaar oranje accent (WCAG-contrast) */
+  --utrecht-focus-outline-color: var(--verius-oranje);
+}

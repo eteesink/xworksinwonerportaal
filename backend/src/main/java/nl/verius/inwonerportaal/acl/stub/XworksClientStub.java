@@ -20,6 +20,11 @@ import nl.verius.inwonerportaal.acl.model.VraagDefinitie;
 import nl.verius.inwonerportaal.acl.model.VragenlijstDefinitie;
 import nl.verius.inwonerportaal.acl.model.VragenlijstSamenvatting;
 import nl.verius.inwonerportaal.acl.model.Zaak;
+import nl.verius.inwonerportaal.acl.model.Actie;
+import nl.verius.inwonerportaal.acl.model.Afspraak;
+import nl.verius.inwonerportaal.acl.model.Hoofddoel;
+import nl.verius.inwonerportaal.acl.model.Plan;
+import nl.verius.inwonerportaal.acl.model.Subdoel;
 import nl.verius.inwonerportaal.acl.xworks.template.VragenlijstTemplateMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +70,9 @@ public class XworksClientStub implements XworksClient {
     private final Map<String, List<Zaak>> zakenPerBsn = new ConcurrentHashMap<>();
     private final Map<String, Aanvraag> aanvragen = new ConcurrentHashMap<>();
     private final Map<String, MedeondertekenVerzoek> verzoekenPerToken = new ConcurrentHashMap<>();
+    private final Map<String, String> voorkeurstaalPerBsn = new ConcurrentHashMap<>();
+    private final Map<String, List<Plan>> plannenPerBsn = new ConcurrentHashMap<>();
+    private final AtomicInteger idTeller = new AtomicInteger(1);
     private final AtomicInteger aanvraagTeller = new AtomicInteger(1000);
     private final AtomicInteger zaakTeller = new AtomicInteger(20250500);
     private final AtomicInteger bijlageTeller = new AtomicInteger(1);
@@ -86,6 +94,107 @@ public class XworksClientStub implements XworksClient {
                 new Zaak("Z-2025-0481", "Aanvraag bijzondere bijstand", "In behandeling", LocalDate.of(2025, 3, 4)),
                 new Zaak("Z-2024-1192", "Melding schuldhulpverlening", "Afgehandeld", LocalDate.of(2024, 11, 20))
         )));
+
+        // Demo-plan conform het Verius-ontwerp (Plan pagina / Hoofddoel / Subdoel).
+        Subdoel sub1 = new Subdoel("SD-1", "Meer mensen leren kennen/spreken",
+                LocalDate.of(2026, 4, 23), "Dhr. van Tongeren", new ArrayList<>(List.of(
+                new Actie("AC-1", "Naar de buurtkoffie gaan", Actie.HERHALEND, false),
+                new Actie("AC-2", "Bellen met de buurtcoach", Actie.EENMALIG, true))));
+        Subdoel sub2 = new Subdoel("SD-2", "Zelfstandig boodschappen doen",
+                LocalDate.of(2026, 4, 23), "Dhr. van Tongeren", new ArrayList<>());
+        Hoofddoel hd1 = new Hoofddoel("HD-1", "Zelfredzamer worden",
+                new ArrayList<>(List.of(sub1, sub2)));
+        Hoofddoel hd2 = new Hoofddoel("HD-2", "Ik wil mij zelf minder eenzaam voelen/zijn",
+                new ArrayList<>(List.of(
+                        new Subdoel("SD-3", "Wekelijks contact met familie", LocalDate.of(2026, 4, 24),
+                                "Dhr. van Tongeren", new ArrayList<>()))));
+        Afspraak af1 = new Afspraak("AF-1", "Intake reintegratie plan", LocalDate.of(2026, 5, 20),
+                "10:30", "11:15", "Thuis", "Dhr. van Tongeren", Afspraak.VAN_CONSULENT, true);
+        Afspraak af2 = new Afspraak("AF-2", "Rollator leverancier gesprek", LocalDate.of(2026, 5, 23),
+                "10:30", "11:15", "Bel", "leverancier", Afspraak.VAN_LEVERANCIER, false);
+        Plan reintegratie = new Plan("PL-1", "Reintegratie", "Daan Veenstra",
+                LocalDateTime.of(2026, 3, 12, 10, 52),
+                new ArrayList<>(List.of(af1, af2)), new ArrayList<>(List.of(hd1, hd2)));
+        plannenPerBsn.put(DEMO_BSN, new ArrayList<>(List.of(reintegratie)));
+    }
+
+    // --- Integraal Plan ----------------------------------------------------
+
+    @Override
+    public List<Plan> getPlannen(String bsn) {
+        return plannenPerBsn.getOrDefault(bsn, List.of());
+    }
+
+    @Override
+    public Plan getPlan(String bsn, String planId) {
+        return plannenPerBsn.getOrDefault(bsn, List.of()).stream()
+                .filter(p -> p.id().equals(planId))
+                .findFirst()
+                .orElseThrow(() -> new AanvraagNietGevondenException(planId));
+    }
+
+    @Override
+    public Afspraak voegAfspraakToe(String bsn, String planId, Afspraak afspraak) {
+        Plan plan = getPlan(bsn, planId);
+        Afspraak nieuw = new Afspraak("AF-" + idTeller.incrementAndGet(), afspraak.titel(),
+                afspraak.datum(), afspraak.van(), afspraak.tot(), afspraak.locatie(), afspraak.met(),
+                Afspraak.VAN_INWONER, true);
+        plan.afspraken().add(nieuw);
+        return nieuw;
+    }
+
+    @Override
+    public Hoofddoel voegHoofddoelToe(String bsn, String planId, String titel) {
+        Plan plan = getPlan(bsn, planId);
+        Hoofddoel nieuw = new Hoofddoel("HD-" + idTeller.incrementAndGet(), titel, new ArrayList<>());
+        plan.hoofddoelen().add(nieuw);
+        return nieuw;
+    }
+
+    @Override
+    public Subdoel voegSubdoelToe(String bsn, String planId, String hoofddoelId, String titel) {
+        Hoofddoel hd = vindHoofddoel(bsn, planId, hoofddoelId);
+        if (hd.subdoelen().size() >= Hoofddoel.MAX_SUBDOELEN) {
+            throw new IllegalStateException("Een hoofddoel kan maximaal " + Hoofddoel.MAX_SUBDOELEN
+                    + " subdoelen hebben.");
+        }
+        Subdoel nieuw = new Subdoel("SD-" + idTeller.incrementAndGet(), titel, LocalDate.now(),
+                "Inwoner", new ArrayList<>());
+        hd.subdoelen().add(nieuw);
+        return nieuw;
+    }
+
+    @Override
+    public Actie voegActieToe(String bsn, String planId, String hoofddoelId, String subdoelId,
+                              String omschrijving, String type) {
+        Subdoel sd = vindHoofddoel(bsn, planId, hoofddoelId).subdoelen().stream()
+                .filter(s -> s.id().equals(subdoelId))
+                .findFirst()
+                .orElseThrow(() -> new AanvraagNietGevondenException(subdoelId));
+        String t = Actie.HERHALEND.equals(type) ? Actie.HERHALEND : Actie.EENMALIG;
+        Actie nieuw = new Actie("AC-" + idTeller.incrementAndGet(), omschrijving, t, false);
+        sd.acties().add(nieuw);
+        return nieuw;
+    }
+
+    private Hoofddoel vindHoofddoel(String bsn, String planId, String hoofddoelId) {
+        return getPlan(bsn, planId).hoofddoelen().stream()
+                .filter(h -> h.id().equals(hoofddoelId))
+                .findFirst()
+                .orElseThrow(() -> new AanvraagNietGevondenException(hoofddoelId));
+    }
+
+    // --- Voorkeuren --------------------------------------------------------
+
+    @Override
+    public String getVoorkeurstaal(String bsn) {
+        return voorkeurstaalPerBsn.getOrDefault(bsn, "nl");
+    }
+
+    @Override
+    public void setVoorkeurstaal(String bsn, String taal) {
+        voorkeurstaalPerBsn.put(bsn, taal);
+        log.info("Voorkeurstaal van burger {} gezet op {}", bsn, taal);
     }
 
     // --- Inzage ------------------------------------------------------------

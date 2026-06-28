@@ -1,4 +1,16 @@
 import { useEffect, useState } from "react";
+import {
+  Heading2,
+  Heading3,
+  Paragraph,
+  PrimaryActionButton,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "@utrecht/component-library-react";
 import { api } from "../api/client";
 import type { CosignView } from "../types";
 
@@ -31,46 +43,60 @@ export default function Medeondertekenen({ token }: { token: string }) {
   }
 
   return (
-    <main className="layout">
-      <div className="kaart">
-        <h2>Document mede-ondertekenen</h2>
-        {melding && <div className={`melding ${melding.type}`}>{melding.tekst}</div>}
-        {!view && !melding && <p className="muted">Uitnodiging laden…</p>}
+    <div className="kaart">
+      <Heading2>Document mede-ondertekenen</Heading2>
+      {melding && <div className={`melding ${melding.type}`}>{melding.tekst}</div>}
+      {!view && !melding && <Paragraph>Uitnodiging laden…</Paragraph>}
 
-        {view && (
-          <>
-            <div className="rij"><span className="label">Document</span><span>{view.titel}</span></div>
-            <div className="rij"><span className="label">Document-hash</span><span>{view.documentHash}</span></div>
-            <div className="rij"><span className="label">Status</span><span>{view.status}</span></div>
+      {view && (
+        <>
+          <div className="rij"><span className="label">Document</span><span>{view.titel}</span></div>
+          <div className="rij"><span className="label">Document-hash</span><span>{view.documentHash}</span></div>
+          <div className="rij"><span className="label">Status</span><span>{view.status}</span></div>
 
-            <h3 style={{ fontSize: "0.95rem" }}>Reeds ondertekend door</h3>
-            <table>
-              <thead><tr><th>Naam</th><th>BSN</th><th>Tijdstip</th><th>Niveau</th></tr></thead>
-              <tbody>
-                {view.reedsGetekendDoor.map((h, i) => (
-                  <tr key={i}><td>{h.naam}</td><td>{h.bsn}</td><td>{h.tijdstip}</td><td>{h.assuranceNiveau}</td></tr>
-                ))}
-              </tbody>
-            </table>
+          <Heading3>Reeds ondertekend door</Heading3>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell>Naam</TableHeaderCell>
+                <TableHeaderCell>BSN</TableHeaderCell>
+                <TableHeaderCell>Tijdstip</TableHeaderCell>
+                <TableHeaderCell>Niveau</TableHeaderCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {view.reedsGetekendDoor.map((h, i) => (
+                <TableRow key={i}>
+                  <TableCell>{h.naam}</TableCell>
+                  <TableCell>{h.bsn}</TableCell>
+                  <TableCell>{h.tijdstip}</TableCell>
+                  <TableCell>{h.assuranceNiveau}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
-            {klaar ? (
-              <p className="muted">U heeft ondertekend. Het document is volledig getekend en teruggekoppeld aan het portaal.</p>
-            ) : view.magTekenen ? (
-              <>
-                <p className="muted">
-                  Door te ondertekenen verklaart u akkoord met dit document. Uw DigiD-identiteit, het tijdstip en
-                  de document-hash worden vastgelegd (geverifieerde elektronische handtekening).
-                </p>
-                <button className="primair" disabled={bezig} onClick={onderteken}>
-                  {bezig ? "Ondertekenen…" : "Ondertekenen met DigiD"}
-                </button>
-              </>
-            ) : (
-              <div className="melding fout">{view.redenNietTekenen ?? "U kunt dit document niet ondertekenen."}</div>
-            )}
-          </>
-        )}
-      </div>
-    </main>
+          {klaar ? (
+            <Paragraph>
+              U heeft ondertekend. Het document is volledig getekend en teruggekoppeld aan het portaal.
+            </Paragraph>
+          ) : view.magTekenen ? (
+            <>
+              <Paragraph>
+                Door te ondertekenen verklaart u akkoord met dit document. Uw DigiD-identiteit, het tijdstip en
+                de document-hash worden vastgelegd (geverifieerde elektronische handtekening).
+              </Paragraph>
+              <PrimaryActionButton disabled={bezig} onClick={onderteken}>
+                {bezig ? "Ondertekenen…" : "Ondertekenen met DigiD"}
+              </PrimaryActionButton>
+            </>
+          ) : (
+            <div className="melding fout">
+              {view.redenNietTekenen ?? "U kunt dit document niet ondertekenen."}
+            </div>
+          )}
+        </>
+      )}
+    </div>
   );
 }

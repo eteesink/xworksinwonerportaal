@@ -55,5 +55,24 @@ de bestaande X-Works-operaties/services aanroepen. We zien dat de vragenlijst-te
 19. **Autorisatie/scoping**: hoe borgt X-Works dat een burger alleen zijn eigen gegevens ziet (BSN→`PERSOON.NM_BSN`)?
 20. **Contactpersoon** voor de technische afstemming (we zien `richardbollee` als SVN-author van de `wiz`/`xws`-resources).
 
+## G. BSN-ontvangst & sessie-ontkoppeling (DigiD verhuist naar de BFF)
+*Context: in de nieuwe opzet termineert DigiD in de BFF (via broker), niet meer in X-Works (`samlp`). De BSN is dan geen ambient sessiegegeven meer in Uniface, maar wordt expliciet door de (vertrouwde) BFF meegegeven. We zien dat `samlp-acs-SAML-receive.xslt` nu de `NameID` (BSN) → Uniface-parameterlijst → sessie/`ACCOUNT`-binding doet. Onderstaande vragen bepalen hoeveel Uniface-aanpassing nodig is en of het backwards-compatible kan.*
+21. **Hoe bepalen de `_system-lsd…`-operaties nu de BSN?** Uit een **sessie-global** (gezet na `samlp`-ACS via `ACCOUNT`/`IDPACCOUNT`), of uit een parameter? Welke variabele/proc is dat (bijv. een `get-current-bsn`)?
+22. **Is er één centrale plek** waar "de huidige BSN" wordt gelezen, of leest elke operatie dit zelf? (bepaalt of één seam volstaat).
+23. **Kan een vertrouwde systeemaanroeper (de BFF) "namens BSN X" handelen** — d.w.z. die sessie-global/parameter vullen vanuit de call — zónder de `samlp`-route te raken? Liefst een **additieve** ingang (parallel), zodat het bestaande portaal ongewijzigd blijft.
+24. **System-auth voor de act-as-BSN-ingang**: welke trust geldt (service-account / mTLS / token)? Kan het bestaande **`PIE.ACCESSTOKEN`**-patroon hiervoor dienen? X-Works mag een meegegeven BSN **alleen** van een geauthenticeerd systeem accepteren, nooit anoniem.
+25. **StUF-route**: voor StUF/ZDS/BG-operaties zit de subject-BSN al in het bericht (`inp.bsn`/stuurgegevens). Klopt dat de inzage-data (persoon/zaken/documenten) via die operaties al per-BSN bevraagbaar is **zonder** sessie — en dus zonder Uniface-codewijziging (alleen system-auth)?
+26. **Backwards compatibility**: blijven `samlp` + de sessiebinding volledig functioneel naast de nieuwe ingang? Is er een feature-flag/namespace-scheiding om de twee paden te isoleren?
+27. **Inschatting**: als 21–24 een wrapper vergen — wat is de bouw-/testinschatting per session-gebonden `lsd`-operatie?
+
+### G2. Voorkeursroute: BFF als lokale SAML-IdP (samlp identity-bridge)
+*Idee: de BFF doet de DigiD-login (SP) en levert de identiteit door aan X-Works door zélf als IdP op te treden naar `samlp`. X-Works zet dan zijn sessie via de bestaande route; alleen configuratie wijzigt, geen code. We zien dat `samlp-AuthnRequest-send` configureerbare `Issuer`/`Destination`/`AssertionConsumerServiceURL`/`NameIDPolicy` heeft en `samlp-acs` `Issuer`/`NameID`/attributen generiek uitleest.*
+28. **Configureerbare IdP**: kunnen we de **IdP/Issuer waar `samlp` op vertrouwt** vervangen door onze eigen IdP (de BFF/"Verius DigiD")? Welke config: IdP-**metadata**, **signing-certificaat**, `Destination`/SSO-URL, entityID? Per omgeving?
+29. **Handtekeningvalidatie**: waar en hoe valideert X-Works de SAMLResponse/assertie-handtekening (welke library/trust-store), zodat we onze IdP-cert kunnen laten vertrouwen?
+30. **NameID & attributen**: welk **NameID-format** en welke **attribuutnamen** verwacht `samlp-acs` exact (we zien `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/…`)? Zodat onze assertie 1-op-1 op de bestaande account-binding past.
+31. **SP- vs IdP-initiated**: `samlp` stuurt een AuthnRequest (SP-initiated). Accepteert de ACS ook **unsolicited/IdP-initiated** responses, of moeten we `InResponseTo` correct beantwoorden? Wat zijn de eisen aan `Recipient`/`Audience`/`NotOnOrAfter`?
+32. **Gevolg voor DigiD-aansluiting**: bevestig dat X-Works na deze wijziging géén eigen DigiD/Logius-aansluiting meer nodig heeft (het vertrouwt alleen onze interne IdP), zodat de DigiD-aansluiting centraal bij de BFF/"Verius DigiD" ligt.
+33. **Inschatting**: bouw-/testinschatting voor deze config-only route vs. de `act-as-BSN`-wrapper (sectie G).
+
 ---
-*Antwoorden op A–B bepalen of we direct via `xws` kunnen (snelste), C is de fallback (zie `xworks-template-service.md` en `optie-c-template-endpoint.md`).*
+*Antwoorden op A–B bepalen of we direct via `xws` kunnen (snelste), C is de fallback (zie `xworks-template-service.md` en `optie-c-template-endpoint.md`). Sectie G bepaalt de BSN-/sessie-aanpak (zie `wiki/synthesis/xworks-inwonerportaal-moderne-stack.md`).*

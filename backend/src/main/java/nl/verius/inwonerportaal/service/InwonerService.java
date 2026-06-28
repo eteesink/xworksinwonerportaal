@@ -12,10 +12,16 @@ import nl.verius.inwonerportaal.acl.model.Persoon;
 import nl.verius.inwonerportaal.acl.model.VragenlijstDefinitie;
 import nl.verius.inwonerportaal.acl.model.VragenlijstSamenvatting;
 import nl.verius.inwonerportaal.acl.model.Zaak;
+import nl.verius.inwonerportaal.acl.model.Actie;
+import nl.verius.inwonerportaal.acl.model.Afspraak;
+import nl.verius.inwonerportaal.acl.model.Hoofddoel;
+import nl.verius.inwonerportaal.acl.model.Plan;
+import nl.verius.inwonerportaal.acl.model.Subdoel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Toepassingslogica van het inwonerportaal. Orchestreert de ACL en is de plek waar later
@@ -24,10 +30,52 @@ import java.util.Map;
 @Service
 public class InwonerService {
 
+    /** Ondersteunde portaaltalen (ISO 639-1). Uitbreidbaar; houd in sync met de frontend-resources. */
+    public static final Set<String> ONDERSTEUNDE_TALEN = Set.of("nl", "en");
+
     private final XworksClient xworks;
 
     public InwonerService(XworksClient xworks) {
         this.xworks = xworks;
+    }
+
+    // Voorkeuren
+    public String voorkeurstaal(String bsn) {
+        return xworks.getVoorkeurstaal(bsn);
+    }
+
+    public void zetVoorkeurstaal(String bsn, String taal) {
+        String genormaliseerd = taal == null ? "" : taal.trim().toLowerCase();
+        if (!ONDERSTEUNDE_TALEN.contains(genormaliseerd)) {
+            throw new IllegalArgumentException("Niet-ondersteunde taal: " + taal);
+        }
+        xworks.setVoorkeurstaal(bsn, genormaliseerd);
+    }
+
+    // Integraal Plan (Epic 10)
+    public List<Plan> plannen(String bsn) {
+        return xworks.getPlannen(bsn);
+    }
+
+    public Plan plan(String bsn, String planId) {
+        return xworks.getPlan(bsn, planId);
+    }
+
+    public Afspraak voegAfspraakToe(String bsn, String planId, Afspraak afspraak) {
+        return xworks.voegAfspraakToe(bsn, planId, afspraak);
+    }
+
+    public Hoofddoel voegHoofddoelToe(String bsn, String planId, String titel) {
+        return xworks.voegHoofddoelToe(bsn, planId, titel);
+    }
+
+    public Subdoel voegSubdoelToe(String bsn, String planId, String hoofddoelId, String titel) {
+        return xworks.voegSubdoelToe(bsn, planId, hoofddoelId, titel);
+    }
+
+    public Actie voegActieToe(String bsn, String planId, String hoofddoelId, String subdoelId,
+                              String omschrijving, String type) {
+        return xworks.voegActieToe(bsn, planId, hoofddoelId, subdoelId, omschrijving, type);
     }
 
     // Inzage

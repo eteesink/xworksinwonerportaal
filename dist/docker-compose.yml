@@ -1,10 +1,17 @@
 services:
   inwonerportaal:
-    image: vs-inwonerportaal:0.1.0
+    image: vs-inwonerportaal:0.2.0
     container_name: vs-inwonerportaal
     environment:
       SERVER_PORT: "10040"
       SPRING_PROFILES_ACTIVE: "stub"
+      # Vertaalstore (i18n) in een volume → beheer-edits overleven herstart/herbouw.
+      INWONERPORTAAL_I18N_STORE_FILE: "/data/i18n-store.json"
+      # Beheerinterface staat dicht (alleen via de echte rol/claim van de gatekeeper).
+      # Voor een gesloten demo-omgeving tijdelijk te openen:
+      # INWONERPORTAAL_BEHEER_DEMO_OPEN: "true"
+    volumes:
+      - i18n-data:/data
     networks:
       - gatekeeper
     restart: unless-stopped
@@ -17,3 +24,6 @@ networks:
   gatekeeper:
     external: true
     name: verius-gatekeeper_gatekeeper
+
+volumes:
+  i18n-data:

@@ -1,0 +1,23 @@
+{
+  "nav.home": "Home",
+  "nav.plannen": "My plans",
+  "nav.gegevens": "Details",
+  "nav.berichten": "Messages",
+  "header.language": "Language",
+  "header.loggedInDemo": "Signed in via DigiD · demo",
+  "breadcrumb.home": "Home",
+  "home.welcomeTitle": "Welcome to the resident portal",
+  "home.welcomeBody": "View your plans, details and messages. You are signed in via DigiD.",
+  "home.quickTo": "Quick links",
+  "plannen.title": "My plans",
+  "plannen.soon": "The plan screens (Plan → Goals → Subgoals → Actions, with Appointments) will follow in phase 2 of the Verius rebuild.",
+  "berichten.title": "Messages",
+  "berichten.soon": "Two-way communication with the municipality will follow in a later phase.",
+  "gegevens.mijnGegevens": "My details",
+  "gegevens.contactgegevens": "Contact details",
+  "gegevens.aanvraagIndienen": "Submit a request",
+  "gegevens.mijnZaken": "My cases",
+  "footer.tagline": "Resident portal · demo",
+  "taal.opgeslagen": "Language preference saved",
+  "taal.opslaanMislukt": "Could not save language preference"
+}

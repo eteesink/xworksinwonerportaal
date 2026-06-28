@@ -94,6 +94,50 @@ export interface AanvraagResultaat {
   status: string;
 }
 
+// --- Integraal Plan (Epic 10) ---
+
+export interface Actie {
+  id: string;
+  omschrijving: string;
+  type: "eenmalig" | "herhalend";
+  gereed: boolean;
+}
+
+export interface Subdoel {
+  id: string;
+  titel: string;
+  aangemaaktOp: string;
+  aangemaaktDoor: string;
+  acties: Actie[];
+}
+
+export interface Hoofddoel {
+  id: string;
+  titel: string;
+  subdoelen: Subdoel[];
+}
+
+export interface Afspraak {
+  id: string;
+  titel: string;
+  datum: string;
+  van: string;
+  tot: string;
+  locatie: string;
+  met: string;
+  herkomst: string;
+  aanpasbaar: boolean;
+}
+
+export interface Plan {
+  id: string;
+  titel: string;
+  laatsteWijzigingDoor: string;
+  laatsteWijzigingOp: string;
+  afspraken: Afspraak[];
+  hoofddoelen: Hoofddoel[];
+}
+
 // --- Mede-ondertekenen (story 14408) ---
 
 export interface Handtekening {

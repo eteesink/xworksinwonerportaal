@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Representatieve template (POC). Echte definitie komt uit X-Works wiz-vltmpl00-getocc. -->
+<vragenlijsttemplate type="jeugdhulp" titel="Aanvraag jeugdhulp" administration="opmr">
+  <pagina volgorde="1" naam="Kind">
+    <vraag id="naamKind" label="Naam kind" type="tekst" verplicht="true"/>
+    <vraag id="geboortedatum" label="Geboortedatum" type="datum" verplicht="true"/>
+    <vraag id="relatie" label="Uw relatie tot het kind" type="keuze" verplicht="true">
+      <optie>Ouder</optie>
+      <optie>Voogd</optie>
+      <optie>Verzorger</optie>
+    </vraag>
+  </pagina>
+  <pagina volgorde="2" naam="Hulpvraag">
+    <vraag id="domein" label="Waar gaat de hulpvraag over?" type="keuze" verplicht="true">
+      <optie>Opgroeien en opvoeden</optie>
+      <optie>Psychische klachten</optie>
+      <optie>Gedrag</optie>
+      <optie>Anders</optie>
+    </vraag>
+    <vraag id="domeinAnders" label="Toelichting" type="tekst" verplicht="true"
+           zichtbaarAls="domein==Anders"/>
+    <vraag id="omschrijving" label="Omschrijf de hulpvraag" type="tekst" verplicht="true"/>
+    <vraag id="eerderHulp" label="Is er eerder hulp geweest?" type="keuze" verplicht="true">
+      <optie>Ja</optie>
+      <optie>Nee</optie>
+    </vraag>
+  </pagina>
+</vragenlijsttemplate>

@@ -22,3 +22,7 @@ dist/*.tar
 
 # Gegenereerde HTML uit de markdown-docs
 docs/*.html
+
+# i18n translation store (runtime data)
+backend/data/
+data/i18n-store.json

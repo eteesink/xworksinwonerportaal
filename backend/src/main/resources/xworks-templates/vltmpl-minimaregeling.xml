@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Representatieve template (POC). Echte definitie komt uit X-Works wiz-vltmpl00-getocc. -->
+<vragenlijsttemplate type="minimaregeling" titel="Minimaregeling / participatiebijdrage" administration="opmr">
+  <pagina volgorde="1" naam="Aanvraag">
+    <vraag id="regeling" label="Voor welke regeling vraagt u aan?" type="keuze" verplicht="true">
+      <optie>Sport en cultuur</optie>
+      <optie>Schoolkosten</optie>
+      <optie>Computerregeling</optie>
+      <optie>Anders</optie>
+    </vraag>
+    <vraag id="regelingAnders" label="Omschrijf de regeling" type="tekst" verplicht="true"
+           zichtbaarAls="regeling==Anders"/>
+    <vraag id="aantalKinderen" label="Aantal kinderen in het huishouden" type="getal" verplicht="true"/>
+  </pagina>
+  <pagina volgorde="2" naam="Kosten">
+    <vraag id="kosten" label="Kostenposten" type="groep" verplicht="true">
+      <vraag id="omschrijving" label="Omschrijving" type="tekst" verplicht="true"/>
+      <vraag id="bedrag" label="Bedrag (€)" type="bedrag" verplicht="true"/>
+    </vraag>
+  </pagina>
+</vragenlijsttemplate>

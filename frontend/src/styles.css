@@ -1,19 +1,26 @@
 :root {
-  /* Stipter-huisstijl (afgeleid van het logo op www.stipter.nl) */
-  --stipter-blauw: #1a405a;
-  --stipter-blauw-donker: #122e40;
-  --stipter-groen: #77b31d;
-  --stipter-groen-donker: #688f23;
+  /* ── Verius design-tokens (afgeleid uit docs/design/verius-design-system.md;
+        exacte hex nog te bevestigen tegen de Figma-bron) ─────────────────── */
+  --verius-groen: #12302a;        /* header, footer, primaire vlakken/knoppen */
+  --verius-groen-700: #1c3f36;    /* actieve nav-pill, hover */
+  --verius-oranje: #e0600f;       /* spaarzaam accent: actief, status-dot */
+  --verius-zand: #f4efe3;         /* highlight-kaart "Niet om te missen" */
 
-  --kleur-bg: #f4f6f8;
+  /* Semantische tokens (de pagina's gebruiken deze via klassen) */
+  --kleur-bg: #ffffff;
   --kleur-kaart: #ffffff;
-  --kleur-rand: #d7dde3;
-  --kleur-tekst: #1c2b36;
-  --kleur-muted: #5b6b78;
+  --kleur-rand: #e2e2dd;
+  --kleur-tekst: #1a1a1a;
+  --kleur-muted: #5f6b66;
   --kleur-fout: #b3261e;
   --kleur-ok: #2e7d32;
+  --kleur-link: var(--verius-groen);
 
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --radius: 10px;
+  --radius-knop: 8px;
+  --maxbreedte: 1080px;
+
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   color: var(--kleur-tekst);
 }
 
@@ -24,62 +31,170 @@
 body {
   margin: 0;
   background: var(--kleur-bg);
+  line-height: 1.5;
 }
 
-/* Topbar met logo */
-.topbar {
-  background: var(--kleur-kaart);
-  border-bottom: 1px solid var(--kleur-rand);
-  box-shadow: 0 1px 3px rgba(26, 64, 90, 0.06);
+a {
+  color: var(--kleur-link);
+}
+
+/* ── App-shell ───────────────────────────────────────────────────────────── */
+.app-header {
+  background: var(--verius-groen);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   padding: 0.75rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.brand-wordmark {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: 1.2rem;
 }
-
-.topbar .brand {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-}
-
-.topbar .logo {
-  height: 38px;
-  width: auto;
-  display: block;
-}
-
-.topbar .appnaam {
-  font-size: 1.1rem;
+.brand-wordmark .merk {
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--stipter-blauw);
-  padding-left: 0.9rem;
-  border-left: 1px solid var(--kleur-rand);
+  opacity: 0.85;
 }
 
-.topbar .burger {
-  font-size: 0.85rem;
+/* Wrapper rond nav + rechterkant: inline op desktop, dropdown op smal scherm */
+.app-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.app-nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.app-nav .nav-link {
+  background: none;
+  border: none;
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-knop);
+  cursor: pointer;
+  opacity: 0.9;
+}
+.app-nav .nav-link:hover {
+  background: var(--verius-groen-700);
+  opacity: 1;
+}
+.app-nav .nav-link.actief {
+  background: var(--verius-groen-700);
+  font-weight: 600;
+  opacity: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  margin-left: auto;
+}
+.header-right .lang {
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.header-right .lang select {
+  background: var(--verius-groen-700);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-knop);
+  padding: 0.3rem 0.5rem;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.header-right .lang select option {
+  background: #ffffff;
+  color: #1a1a1a;
+}
+.header-right .usermenu {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.menu-toggle {
+  display: none;
+  margin-left: auto;
+  background: var(--verius-groen-700);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-knop);
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  max-width: var(--maxbreedte);
+  margin: 1rem auto 0;
+  padding: 0 1.5rem;
+  font-size: 0.88rem;
+  color: var(--kleur-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.breadcrumb a {
+  text-decoration: underline;
   color: var(--kleur-muted);
 }
-
-.topbar .burger::before {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--stipter-groen);
-  margin-right: 0.5rem;
-  vertical-align: middle;
+.breadcrumb .sep {
+  opacity: 0.6;
 }
 
+/* Content */
 .layout {
-  max-width: 920px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
+  max-width: var(--maxbreedte);
+  margin: 1.25rem auto;
+  padding: 0 1.5rem;
 }
 
-/* Tabs */
+/* Twee koloms (sticky sectie-nav + content) */
+.content-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.section-nav {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.section-nav a {
+  padding: 0.4rem 0 0.4rem 0.9rem;
+  border-left: 3px solid transparent;
+  color: var(--kleur-muted);
+  text-decoration: none;
+}
+.section-nav a.actief {
+  border-left-color: var(--verius-oranje);
+  color: var(--verius-oranje);
+  font-weight: 600;
+}
+
+/* ── Secundaire tabnav (binnen een sectie, bv. Gegevens) ─────────────────── */
 .tabs {
   display: flex;
   gap: 0.25rem;
@@ -87,7 +202,6 @@ body {
   margin-bottom: 1.25rem;
   flex-wrap: wrap;
 }
-
 .tabs button {
   background: none;
   border: none;
@@ -98,70 +212,94 @@ body {
   color: var(--kleur-muted);
   border-bottom: 3px solid transparent;
 }
-
 .tabs button:hover {
-  color: var(--stipter-blauw);
+  color: var(--verius-groen);
 }
-
 .tabs button.actief {
-  color: var(--stipter-blauw);
-  border-bottom-color: var(--stipter-groen);
+  color: var(--verius-groen);
+  border-bottom-color: var(--verius-oranje);
   font-weight: 600;
 }
 
-/* Kaarten */
+/* ── Kaarten ─────────────────────────────────────────────────────────────── */
 .kaart {
   background: var(--kleur-kaart);
   border: 1px solid var(--kleur-rand);
-  border-radius: 10px;
+  border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
   margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(26, 64, 90, 0.05);
 }
-
 .kaart h2 {
   margin-top: 0;
   font-size: 1.1rem;
-  color: var(--stipter-blauw);
-  border-left: 4px solid var(--stipter-groen);
-  padding-left: 0.6rem;
+  color: var(--verius-groen);
+}
+.kaart h3 {
+  color: var(--verius-groen);
 }
 
-.kaart h3 {
-  color: var(--stipter-blauw);
+/* Sectiekop met icoon + actie rechts */
+.sectie-kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.75rem 0 0.75rem;
+}
+.sectie-kop h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--kleur-tekst);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Highlight-kaart "Niet om te missen" */
+.highlight {
+  background: var(--verius-zand);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.highlight h3 {
+  margin-top: 0;
+}
+
+/* Status-dot (bv. "● 2 acties") */
+.status-dot::before {
+  content: "●";
+  color: var(--verius-oranje);
+  margin-right: 0.4rem;
 }
 
 .rij {
   display: flex;
   padding: 0.45rem 0;
-  border-bottom: 1px solid #eef1f4;
+  border-bottom: 1px solid #f0f1ee;
 }
-
 .rij:last-child {
   border-bottom: none;
 }
-
 .rij .label {
   width: 220px;
   color: var(--kleur-muted);
   flex-shrink: 0;
 }
 
-/* Formuliervelden */
+/* ── Formuliervelden ─────────────────────────────────────────────────────── */
 .veld {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   margin-bottom: 0.9rem;
 }
-
 .veld label {
   font-size: 0.85rem;
   color: var(--kleur-muted);
 }
-
 .veld input,
 .veld select,
+.veld textarea,
 table input {
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--kleur-rand);
@@ -170,76 +308,71 @@ table input {
   font-family: inherit;
   background: #fff;
 }
-
 .veld input:focus,
 .veld select:focus,
+.veld textarea:focus,
 table input:focus {
   outline: none;
-  border-color: var(--stipter-blauw);
-  box-shadow: 0 0 0 3px rgba(119, 179, 29, 0.2);
+  border-color: var(--verius-groen);
+  box-shadow: 0 0 0 3px rgba(18, 48, 42, 0.15);
 }
 
-/* Knoppen */
-button.primair,
+/* ── Knoppen ─────────────────────────────────────────────────────────────── */
 button {
   font-family: inherit;
 }
 
+/* Primair = gevuld donkergroen (CTA) */
 button.primair {
-  background: var(--stipter-blauw);
+  background: var(--verius-groen);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-knop);
   padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
   cursor: pointer;
 }
-
 button.primair:hover {
-  background: var(--stipter-blauw-donker);
+  background: var(--verius-groen-700);
 }
-
 button.primair:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-/* secundaire/standaard knoppen */
+/* Secundair/standaard = outlined */
 .layout button:not(.primair) {
   background: #fff;
   border: 1px solid var(--kleur-rand);
-  border-radius: 6px;
+  border-radius: var(--radius-knop);
   padding: 0.55rem 1rem;
   font-size: 0.92rem;
-  color: var(--stipter-blauw);
+  color: var(--verius-groen);
   cursor: pointer;
 }
-
 .layout button:not(.primair):hover {
-  border-color: var(--stipter-blauw);
+  border-color: var(--verius-groen);
 }
 
-/* Tabellen */
+/* ── Tabellen ────────────────────────────────────────────────────────────── */
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.92rem;
   margin-bottom: 0.75rem;
 }
-
 th,
 td {
   text-align: left;
   padding: 0.55rem 0.5rem;
-  border-bottom: 1px solid #eef1f4;
+  border-bottom: 1px solid #f0f1ee;
 }
-
 th {
   color: var(--kleur-muted);
   font-weight: 600;
 }
 
-/* Meldingen */
+/* ── Meldingen ───────────────────────────────────────────────────────────── */
 .melding {
   padding: 0.6rem 0.9rem;
   border-radius: 6px;
@@ -247,13 +380,11 @@ th {
   font-size: 0.9rem;
   border-left: 4px solid transparent;
 }
-
 .melding.ok {
   background: #eef7ec;
   color: var(--kleur-ok);
-  border-left-color: var(--stipter-groen);
+  border-left-color: var(--kleur-ok);
 }
-
 .melding.fout {
   background: #fdecea;
   color: var(--kleur-fout);
@@ -265,19 +396,230 @@ th {
   font-size: 0.85rem;
 }
 
-/* Footer */
-.footer {
-  max-width: 920px;
-  margin: 1.5rem auto 2.5rem;
-  padding: 0 1rem;
+/* Klikbare lijstrij (plannen/doelen) */
+.lijst-rij {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--kleur-rand);
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+}
+.lijst-rij:hover {
+  border-color: var(--verius-groen);
+}
+.lijst-rij .titel {
+  font-weight: 600;
+  color: var(--verius-groen);
+}
+.lijst-rij .pijl {
+  color: var(--verius-groen);
+  font-size: 1.2rem;
+}
+
+/* Afspraakkaart-meta */
+.meta-regel {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
   color: var(--kleur-muted);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Stepper (stappen in een dialoog) */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.stepper .stap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--kleur-muted);
+  font-size: 0.9rem;
+}
+.stepper .bol {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--kleur-rand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.stepper .stap.actief {
+  color: var(--kleur-tekst);
+  font-weight: 600;
+}
+.stepper .stap.actief .bol {
+  background: var(--verius-groen);
+  border-color: var(--verius-groen);
+  color: #fff;
+}
+.stepper .lijn {
+  flex: 1;
+  height: 1px;
+  background: var(--kleur-rand);
+  min-width: 16px;
+}
+
+/* Segment-keuze (type afspraak) */
+.segment {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.segment label {
+  border: 1px solid var(--kleur-rand);
+  border-radius: var(--radius-knop);
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+.segment label.gekozen {
+  border-color: var(--verius-groen);
+  background: #f0f3f1;
+}
 
-.footer .punt {
-  color: var(--stipter-groen);
+/* Modal / dialoog */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-kop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.modal-sluit {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--kleur-muted);
+  line-height: 1;
+}
+.modal-acties {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Placeholder voor nog te bouwen schermen (fase 2) */
+.binnenkort {
+  border: 1px dashed var(--kleur-rand);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  color: var(--kleur-muted);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.app-footer {
+  background: var(--verius-groen);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  margin-top: 2rem;
+}
+.app-footer .merk {
   font-weight: 700;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+/* Tablet & mobiel: hoofdmenu inklappen tot een hamburger-dropdown. */
+@media (max-width: 900px) {
+  .menu-toggle {
+    display: block;
+  }
+  .app-menu {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+  }
+  .app-menu.open {
+    display: flex;
+  }
+  .app-nav {
+    flex-direction: column;
+  }
+  .app-nav .nav-link {
+    text-align: left;
+  }
+  .header-right {
+    margin-left: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Kleine schermen (telefoon): compacter, minder marge. */
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0.6rem 1rem;
+  }
+  .layout,
+  .breadcrumb {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .kaart {
+    padding: 1rem;
+  }
+  .tabs button {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.9rem;
+  }
+  .sectie-kop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }

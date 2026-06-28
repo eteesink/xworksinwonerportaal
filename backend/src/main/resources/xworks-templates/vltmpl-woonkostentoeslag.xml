@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Representatieve template (POC). Echte definitie komt uit X-Works wiz-vltmpl00-getocc. -->
+<vragenlijsttemplate type="woonkostentoeslag" titel="Woonkostentoeslag (bijzondere bijstand)" administration="opmr">
+  <pagina volgorde="1" naam="Woning">
+    <vraag id="woningtype" label="Type woning" type="keuze" verplicht="true">
+      <optie>Huurwoning</optie>
+      <optie>Koopwoning</optie>
+    </vraag>
+    <vraag id="kalehuur" label="Kale huur per maand (€)" type="bedrag" verplicht="true"
+           zichtbaarAls="woningtype==Huurwoning"/>
+    <vraag id="hypotheeklasten" label="Hypotheeklasten per maand (€)" type="bedrag" verplicht="true"
+           zichtbaarAls="woningtype==Koopwoning"/>
+  </pagina>
+  <pagina volgorde="2" naam="Inkomen">
+    <vraag id="inkomen" label="Netto maandinkomen (€)" type="bedrag" verplicht="true"/>
+    <vraag id="huurtoeslag" label="Ontvangt u huurtoeslag?" type="keuze" verplicht="true">
+      <optie>Ja</optie>
+      <optie>Nee</optie>
+    </vraag>
+    <vraag id="terugvalReden" label="Reden inkomensterugval" type="tekst" verplicht="false"/>
+  </pagina>
+</vragenlijsttemplate>

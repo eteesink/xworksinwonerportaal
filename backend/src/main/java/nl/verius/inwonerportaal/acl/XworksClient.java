@@ -103,4 +103,39 @@ public interface XworksClient {
      * legt de handtekening + audit vast en zet de status op volledig-getekend.
      */
     AanvraagResultaat partnerOndertekent(String token, String ingelogdeBsn, String naam);
+
+    // --- Integraal Plan (Epic 10): plannen, afspraken, doelen, acties ------
+
+    /** Plannen van de burger (samenvatting + volledige boom). */
+    java.util.List<nl.verius.inwonerportaal.acl.model.Plan> getPlannen(String bsn);
+
+    /** Eén plan met afspraken, hoofddoelen, subdoelen en acties. */
+    nl.verius.inwonerportaal.acl.model.Plan getPlan(String bsn, String planId);
+
+    /** Afspraak toevoegen aan een plan. */
+    nl.verius.inwonerportaal.acl.model.Afspraak voegAfspraakToe(
+            String bsn, String planId, nl.verius.inwonerportaal.acl.model.Afspraak afspraak);
+
+    /** Hoofddoel toevoegen aan een plan. */
+    nl.verius.inwonerportaal.acl.model.Hoofddoel voegHoofddoelToe(String bsn, String planId, String titel);
+
+    /** Subdoel toevoegen aan een hoofddoel (max. 5 — daarboven een conflict). */
+    nl.verius.inwonerportaal.acl.model.Subdoel voegSubdoelToe(
+            String bsn, String planId, String hoofddoelId, String titel);
+
+    /** Actie toevoegen aan een subdoel ({@code eenmalig}/{@code herhalend}). */
+    nl.verius.inwonerportaal.acl.model.Actie voegActieToe(
+            String bsn, String planId, String hoofddoelId, String subdoelId, String omschrijving, String type);
+
+    // --- Voorkeuren (per burger, reist mee met de BSN) ---------------------
+
+    /**
+     * Voorkeurstaal (ISO 639-1, bv. {@code nl}/{@code en}) van de burger. In X-Works hoort dit als
+     * een per-persoon/-account-voorkeur (bv. op {@code ACCOUNT}/{@code PERSOON}), zodat de standaard
+     * met de burger meereist over apparaten heen. Default {@code nl} als niets is ingesteld.
+     */
+    String getVoorkeurstaal(String bsn);
+
+    /** Stelt de standaard-voorkeurstaal van de burger in (gevalideerd tegen de ondersteunde talen). */
+    void setVoorkeurstaal(String bsn, String taal);
 }

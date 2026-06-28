@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Heading2, Paragraph } from "@utrecht/component-library-react";
 import { api } from "../api/client";
 import type { Persoon } from "../types";
 
@@ -17,11 +18,11 @@ export default function MijnGegevens() {
   }, []);
 
   if (fout) return <div className="melding fout">{fout}</div>;
-  if (!persoon) return <p className="muted">Gegevens laden…</p>;
+  if (!persoon) return <Paragraph>Gegevens laden…</Paragraph>;
 
   return (
     <div className="kaart">
-      <h2>Mijn gegevens</h2>
+      <Heading2>Mijn gegevens</Heading2>
       <div className="rij"><span className="label">Naam</span><span>{persoon.voornaam} {persoon.achternaam}</span></div>
       <div className="rij"><span className="label">BSN</span><span>{persoon.bsn}</span></div>
       <div className="rij"><span className="label">Klantnummer</span><span>{persoon.klantnummer}</span></div>

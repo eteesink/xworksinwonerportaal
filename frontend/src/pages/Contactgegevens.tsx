@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Heading2, FormLabel, Textbox, PrimaryActionButton } from "@utrecht/component-library-react";
 import { api } from "../api/client";
 
 export default function Contactgegevens() {
@@ -30,20 +31,20 @@ export default function Contactgegevens() {
 
   return (
     <div className="kaart">
-      <h2>Contactgegevens wijzigen</h2>
+      <Heading2>Contactgegevens wijzigen</Heading2>
       {melding && <div className={`melding ${melding.type}`}>{melding.tekst}</div>}
       <form onSubmit={opslaan}>
         <div className="veld">
-          <label htmlFor="telefoon">Telefoonnummer</label>
-          <input id="telefoon" value={telefoon} onChange={(e) => setTelefoon(e.target.value)} />
+          <FormLabel htmlFor="telefoon">Telefoonnummer</FormLabel>
+          <Textbox id="telefoon" value={telefoon} onChange={(e) => setTelefoon(e.target.value)} />
         </div>
         <div className="veld">
-          <label htmlFor="email">E-mailadres</label>
-          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <FormLabel htmlFor="email">E-mailadres</FormLabel>
+          <Textbox id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        <button className="primair" type="submit" disabled={bezig}>
+        <PrimaryActionButton type="submit" disabled={bezig}>
           {bezig ? "Opslaan…" : "Opslaan"}
-        </button>
+        </PrimaryActionButton>
       </form>
       <p className="muted">
         Dit is het enige persoonsblok dat de burger in het oude portaal zelf kon muteren

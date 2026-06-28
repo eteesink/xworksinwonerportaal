@@ -1,13 +1,18 @@
 import type {
   Aanvraag,
   AanvraagResultaat,
+  Actie,
+  Afspraak,
   Antwoorden,
   Bijlage,
   Contactgegevens,
   EvaluatieResultaat,
   CosignView,
+  Hoofddoel,
   MedeondertekenVerzoek,
   Persoon,
+  Plan,
+  Subdoel,
   VragenlijstDefinitie,
   VragenlijstSamenvatting,
   Zaak,
@@ -52,7 +57,68 @@ const json = (method: string, body?: unknown): RequestInit => {
   };
 };
 
+// Beheer-calls dragen (in de POC) een demo-rolheader. TODO: vervangen door de echte
+// rol/claim uit Authentik/IdP — de header wordt dan door de gatekeeper geïnjecteerd.
+const BEHEER_HEADER = { "X-Demo-Rol": "beheerder" };
+const beheerJson = (method: string, body?: unknown): RequestInit => {
+  const base = json(method, body);
+  return { ...base, headers: { ...(base.headers ?? {}), ...BEHEER_HEADER } };
+};
+
+export interface I18nEntry {
+  key: string;
+  bron: string;
+  waarde: string;
+  status: "missing" | "auto" | "reviewed" | "source";
+}
+
 export const api = {
+  // Voorkeuren (taal reist mee met de burger, server-side)
+  getTaal: () =>
+    fetch(`${BASE}/voorkeuren/taal`).then((r) => handle<{ taal: string; ondersteund: string[] }>(r)),
+  setTaal: (taal: string) =>
+    fetch(`${BASE}/voorkeuren/taal`, json("PUT", { taal })).then((r) => handle<void>(r)),
+
+  // i18n (publiek): beschikbare talen voor de switcher
+  getTalen: () => fetch(`${BASE}/i18n`).then((r) => handle<{ talen: string[]; bron: string }>(r)),
+
+  // Integraal Plan (Epic 10)
+  getPlannen: () => fetch(`${BASE}/plannen`).then((r) => handle<Plan[]>(r)),
+  getPlan: (planId: string) => fetch(`${BASE}/plannen/${planId}`).then((r) => handle<Plan>(r)),
+  voegAfspraakToe: (
+    planId: string,
+    afspraak: { titel: string; datum: string; van: string; tot: string; locatie: string; met: string }
+  ) => fetch(`${BASE}/plannen/${planId}/afspraken`, json("POST", afspraak)).then((r) => handle<Afspraak>(r)),
+  voegHoofddoelToe: (planId: string, titel: string) =>
+    fetch(`${BASE}/plannen/${planId}/hoofddoelen`, json("POST", { titel })).then((r) => handle<Hoofddoel>(r)),
+  voegSubdoelToe: (planId: string, hoofddoelId: string, titel: string) =>
+    fetch(`${BASE}/plannen/${planId}/hoofddoelen/${hoofddoelId}/subdoelen`, json("POST", { titel })).then(
+      (r) => handle<Subdoel>(r)
+    ),
+  voegActieToe: (planId: string, hoofddoelId: string, subdoelId: string, omschrijving: string, type: string) =>
+    fetch(
+      `${BASE}/plannen/${planId}/hoofddoelen/${hoofddoelId}/subdoelen/${subdoelId}/acties`,
+      json("POST", { omschrijving, type })
+    ).then((r) => handle<Actie>(r)),
+
+  // i18n-beheer (alleen beheerders)
+  beheerTalen: () =>
+    fetch(`${BASE}/beheer/i18n/talen`, { headers: BEHEER_HEADER }).then((r) =>
+      handle<{ talen: string[]; bron: string }>(r)
+    ),
+  beheerEntries: (taal: string) =>
+    fetch(`${BASE}/beheer/i18n/${taal}`, { headers: BEHEER_HEADER }).then((r) => handle<I18nEntry[]>(r)),
+  beheerZet: (taal: string, key: string, waarde: string) =>
+    fetch(`${BASE}/beheer/i18n/${taal}`, beheerJson("PUT", { key, waarde })).then((r) => handle<void>(r)),
+  beheerVertaalOntbrekende: (taal: string) =>
+    fetch(`${BASE}/beheer/i18n/${taal}/vertaal-ontbrekende`, beheerJson("POST")).then((r) =>
+      handle<{ vertaald: number }>(r)
+    ),
+  beheerVoegTaalToe: (taal: string) =>
+    fetch(`${BASE}/beheer/i18n/talen`, beheerJson("POST", { taal })).then((r) => handle<void>(r)),
+  beheerVerwijderTaal: (taal: string) =>
+    fetch(`${BASE}/beheer/i18n/${taal}`, beheerJson("DELETE")).then((r) => handle<void>(r)),
+
   // Inzage + persoon
   getPersoon: () => fetch(`${BASE}/persoon`).then((r) => handle<Persoon>(r)),
   getZaken: () => fetch(`${BASE}/zaken`).then((r) => handle<Zaak[]>(r)),

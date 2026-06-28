@@ -45,6 +45,52 @@ public class XworksSoapClient implements XworksClient {
     }
 
     @Override
+    public java.util.List<nl.verius.inwonerportaal.acl.model.Plan> getPlannen(String bsn) {
+        // TODO: Integraal Plan via WIZportaal-koppeling (Epic 10).
+        throw tedoen();
+    }
+
+    @Override
+    public nl.verius.inwonerportaal.acl.model.Plan getPlan(String bsn, String planId) {
+        throw tedoen();
+    }
+
+    @Override
+    public nl.verius.inwonerportaal.acl.model.Afspraak voegAfspraakToe(
+            String bsn, String planId, nl.verius.inwonerportaal.acl.model.Afspraak afspraak) {
+        throw tedoen();
+    }
+
+    @Override
+    public nl.verius.inwonerportaal.acl.model.Hoofddoel voegHoofddoelToe(String bsn, String planId, String titel) {
+        throw tedoen();
+    }
+
+    @Override
+    public nl.verius.inwonerportaal.acl.model.Subdoel voegSubdoelToe(
+            String bsn, String planId, String hoofddoelId, String titel) {
+        throw tedoen();
+    }
+
+    @Override
+    public nl.verius.inwonerportaal.acl.model.Actie voegActieToe(
+            String bsn, String planId, String hoofddoelId, String subdoelId, String omschrijving, String type) {
+        throw tedoen();
+    }
+
+    @Override
+    public String getVoorkeurstaal(String bsn) {
+        // TODO: lees de voorkeurstaal van ACCOUNT/PERSOON via de X-Works servicelaag.
+        throw tedoen();
+    }
+
+    @Override
+    public void setVoorkeurstaal(String bsn, String taal) {
+        // TODO: schrijf de voorkeurstaal terug via de X-Works servicelaag (geen directe DB-write).
+        throw tedoen();
+    }
+
+    @Override
     public Persoon getPersoon(String bsn) {
         throw tedoen();
     }

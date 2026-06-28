@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Representatieve template (POC). Echte definitie komt uit X-Works wiz-vltmpl00-getocc. -->
+<vragenlijsttemplate type="smi" titel="Sociaal Medische Indicatie kinderopvang (SMI)" administration="opmr">
+  <pagina volgorde="1" naam="Situatie">
+    <vraag id="reden" label="Reden van de aanvraag" type="keuze" verplicht="true">
+      <optie>Medische redenen ouder</optie>
+      <optie>Sociale redenen gezin</optie>
+      <optie>Ontwikkeling kind</optie>
+    </vraag>
+    <vraag id="toelichting" label="Toelichting op de situatie" type="tekst" verplicht="true"/>
+  </pagina>
+  <pagina volgorde="2" naam="Kind en opvang">
+    <vraag id="naamKind" label="Naam kind" type="tekst" verplicht="true"/>
+    <vraag id="geboortedatumKind" label="Geboortedatum kind" type="datum" verplicht="true"/>
+    <vraag id="opvangUren" label="Gewenste opvanguren per week" type="getal" verplicht="true"/>
+    <vraag id="opvangorganisatie" label="Opvangorganisatie" type="tekst" verplicht="false"/>
+  </pagina>
+</vragenlijsttemplate>

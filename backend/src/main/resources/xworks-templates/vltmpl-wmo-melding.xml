@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Representatieve template (POC). Echte definitie komt uit X-Works wiz-vltmpl00-getocc. -->
+<vragenlijsttemplate type="wmo-melding" titel="Melding maatschappelijke ondersteuning (Wmo)" administration="opmr">
+  <pagina volgorde="1" naam="Ondersteuningsvraag">
+    <vraag id="gebied" label="Waar heeft u ondersteuning bij nodig?" type="keuze" verplicht="true">
+      <optie>Huishouden</optie>
+      <optie>Vervoer</optie>
+      <optie>Woningaanpassing</optie>
+      <optie>Dagbesteding</optie>
+      <optie>Anders</optie>
+    </vraag>
+    <vraag id="gebiedAnders" label="Toelichting" type="tekst" verplicht="true"
+           zichtbaarAls="gebied==Anders"/>
+    <vraag id="omschrijving" label="Omschrijf uw situatie" type="tekst" verplicht="true"/>
+  </pagina>
+  <pagina volgorde="2" naam="Mantelzorg">
+    <vraag id="mantelzorg" label="Is er iemand die nu voor u zorgt?" type="keuze" verplicht="true">
+      <optie>Ja</optie>
+      <optie>Nee</optie>
+    </vraag>
+    <vraag id="mantelzorger" label="Wie is dat?" type="tekst" verplicht="false"
+           zichtbaarAls="mantelzorg==Ja"/>
+    <vraag id="keukentafelgesprek" label="Wilt u een gesprek bij u thuis?" type="keuze" verplicht="true">
+      <optie>Ja</optie>
+      <optie>Nee, telefonisch</optie>
+    </vraag>
+  </pagina>
+</vragenlijsttemplate>

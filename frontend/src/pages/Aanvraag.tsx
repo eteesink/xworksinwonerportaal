@@ -1,4 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  Heading2,
+  Heading3,
+  Paragraph,
+  PrimaryActionButton,
+  SecondaryActionButton,
+  SubtleButton,
+  FormLabel,
+  Textbox,
+  Select,
+  SelectOption,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "@utrecht/component-library-react";
 import { api } from "../api/client";
 import type {
   Aanvraag as AanvraagModel,
@@ -24,23 +42,24 @@ export default function Aanvraag() {
 
   if (type) return <AanvraagFormulier type={type} onTerug={() => setType(null)} />;
   if (fout) return <div className="melding fout">{fout}</div>;
-  if (!catalogus) return <p className="muted">Vragenlijsten laden…</p>;
+  if (!catalogus) return <Paragraph>Vragenlijsten laden…</Paragraph>;
 
   return (
     <div className="kaart">
-      <h2>Een aanvraag indienen</h2>
-      <p className="muted">
+      <Heading2>Een aanvraag indienen</Heading2>
+      <Paragraph>
         Kies een formulier. De lijst en de formulieren komen dynamisch uit X-Works
         (VRAGENLIJSTTEMPLATE per gemeente) — er is niets vast ingebouwd.
-      </p>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {catalogus.map((c) => (
-          <li key={c.type} style={{ padding: "0.5rem 0", borderBottom: "1px solid #eef1f4" }}>
-            <button className="primair" onClick={() => setType(c.type)}>{c.titel}</button>
-            <span className="muted" style={{ marginLeft: "0.75rem" }}>type: {c.type}</span>
-          </li>
-        ))}
-      </ul>
+      </Paragraph>
+      {catalogus.map((c) => (
+        <button key={c.type} className="lijst-rij" onClick={() => setType(c.type)}>
+          <span>
+            <span className="titel">{c.titel}</span>
+            <span className="meta-regel">type: {c.type}</span>
+          </span>
+          <span className="pijl">→</span>
+        </button>
+      ))}
     </div>
   );
 }
@@ -60,7 +79,6 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
       .then(([def, aan]) => {
         setDefinitie(def);
         setAanvraag(aan);
-        // initialiseer herhaalbare groepen als lege lijst
         const init: Antwoorden = { ...aan.antwoorden };
         def.vragen.filter((v) => v.type === "groep").forEach((g) => {
           if (!Array.isArray(init[g.id])) init[g.id] = [];
@@ -79,7 +97,7 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
   }, [antwoorden, aanvraag]);
 
   if (melding?.type === "fout" && !aanvraag) return <div className="melding fout">{melding.tekst}</div>;
-  if (!definitie || !aanvraag) return <p className="muted">Formulier laden…</p>;
+  if (!definitie || !aanvraag) return <Paragraph>Formulier laden…</Paragraph>;
 
   const ingediend = aanvraag.status === "ingediend" || aanvraag.status === "ondertekend";
 
@@ -96,20 +114,24 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
     return eval_?.validaties.find((f) => f.vraagId === id)?.melding;
   }
 
-  function inputVoor(v: VraagDefinitie, waarde: string, onChange: (val: string) => void) {
+  function inputVoor(v: VraagDefinitie, waarde: string, onChange: (val: string) => void, id?: string) {
     if (v.type === "keuze") {
       return (
-        <select value={waarde} onChange={(e) => onChange(e.target.value)}>
-          <option value="">— kies —</option>
-          {v.opties?.map((o) => <option key={o} value={o}>{o}</option>)}
-        </select>
+        <Select id={id} value={waarde} onChange={(e) => onChange((e.target as HTMLSelectElement).value)}>
+          <SelectOption value="">— kies —</SelectOption>
+          {v.opties?.map((o) => (
+            <SelectOption key={o} value={o}>
+              {o}
+            </SelectOption>
+          ))}
+        </Select>
       );
     }
-    const htmlType = v.type === "bedrag" || v.type === "getal" ? "number" : v.type === "datum" ? "date" : "text";
-    return <input type={htmlType} value={waarde} onChange={(e) => onChange(e.target.value)} />;
+    const htmlType =
+      v.type === "bedrag" || v.type === "getal" ? "number" : v.type === "datum" ? "date" : "text";
+    return <Textbox id={id} type={htmlType} value={waarde} onChange={(e) => onChange(e.target.value)} />;
   }
 
-  // Herhaalbare groepen (X-Works addocc/remocc), generiek per definitie.
   function rijenVan(groepId: string): Rij[] {
     return (antwoorden[groepId] as Rij[]) ?? [];
   }
@@ -154,7 +176,9 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
     try {
       await api.bewaarConcept(aanvraag!.id, antwoorden);
       const res = metDigiD ? await api.ondertekenMetDigiD(aanvraag!.id) : await api.dienIn(aanvraag!.id);
-      setAanvraag((a) => (a ? { ...a, status: metDigiD ? "ondertekend" : "ingediend", zaaknummer: res.zaaknummer } : a));
+      setAanvraag((a) =>
+        a ? { ...a, status: metDigiD ? "ondertekend" : "ingediend", zaaknummer: res.zaaknummer } : a
+      );
       setMelding({ type: "ok", tekst: `${res.status} — zaaknummer ${res.zaaknummer}.` });
     } catch (e) {
       setMelding({ type: "fout", tekst: (e as Error).message });
@@ -165,7 +189,6 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
     e.preventDefault();
     try {
       const v = await api.nodigPartnerUit(aanvraag!.id, partnerEmail);
-      // In de demo tonen we de link (echte koppeling verstuurt 'm per e-mail).
       setUitnodigingLink(`${window.location.origin}/?cosign=${v.token}`);
       setMelding({ type: "ok", tekst: `Uitnodiging verstuurd naar ${partnerEmail}.` });
     } catch (err) {
@@ -176,20 +199,20 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
   if (ingediend) {
     return (
       <div className="kaart">
-        <h2>{aanvraag.titel}</h2>
+        <Heading2>{aanvraag.titel}</Heading2>
         <div className="melding ok">{melding?.tekst ?? "Aanvraag ingediend."}</div>
         <div className="rij"><span className="label">Status</span><span>{aanvraag.status}</span></div>
         <div className="rij"><span className="label">Zaaknummer</span><span>{aanvraag.zaaknummer}</span></div>
         <p className="muted">De aanvraag is als zaak naar X-Works geschreven en verschijnt onder "Mijn zaken".</p>
 
-        <h3 style={{ fontSize: "0.95rem" }}>Laten mede-ondertekenen (partner)</h3>
+        <Heading3>Laten mede-ondertekenen (partner)</Heading3>
         <form onSubmit={nodigPartnerUit} style={{ display: "flex", gap: "0.6rem", alignItems: "flex-end", flexWrap: "wrap" }}>
           <div className="veld" style={{ flex: "1 1 260px" }}>
-            <label htmlFor="partnerEmail">E-mailadres partner</label>
-            <input id="partnerEmail" type="email" value={partnerEmail}
-                   onChange={(e) => setPartnerEmail(e.target.value)} required />
+            <FormLabel htmlFor="partnerEmail">E-mailadres partner</FormLabel>
+            <Textbox id="partnerEmail" type="email" value={partnerEmail}
+                     onChange={(e) => setPartnerEmail(e.target.value)} required />
           </div>
-          <button className="primair" type="submit">Uitnodiging versturen</button>
+          <PrimaryActionButton type="submit">Uitnodiging versturen</PrimaryActionButton>
         </form>
         {uitnodigingLink && (
           <p className="muted">
@@ -199,7 +222,7 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
         )}
 
         <div style={{ marginTop: "1rem" }}>
-          <button onClick={onTerug}>← Andere aanvraag</button>
+          <SubtleButton onClick={onTerug}>← Andere aanvraag</SubtleButton>
         </div>
       </div>
     );
@@ -209,8 +232,8 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
 
   return (
     <div className="kaart">
-      <button onClick={onTerug} style={{ marginBottom: "0.75rem" }}>← Andere aanvraag</button>
-      <h2>{definitie.titel}</h2>
+      <SubtleButton onClick={onTerug}>← Andere aanvraag</SubtleButton>
+      <Heading2>{definitie.titel}</Heading2>
       {melding && <div className={`melding ${melding.type}`}>{melding.tekst}</div>}
 
       {definitie.vragen.map((v) => {
@@ -220,34 +243,41 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
           const rijen = rijenVan(v.id);
           return (
             <div key={v.id}>
-              <h3 style={{ fontSize: "0.95rem" }}>{v.label}{v.verplicht ? " *" : ""}</h3>
+              <Heading3>{v.label}{v.verplicht ? " *" : ""}</Heading3>
               {foutVoor(v.id) && <div className="melding fout">{foutVoor(v.id)}</div>}
-              <table>
-                <thead>
-                  <tr>{v.subvragen?.map((s) => <th key={s.id}>{s.label}</th>)}<th></th></tr>
-                </thead>
-                <tbody>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {v.subvragen?.map((s) => <TableHeaderCell key={s.id}>{s.label}</TableHeaderCell>)}
+                    <TableHeaderCell></TableHeaderCell>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {rijen.map((r, i) => (
-                    <tr key={i}>
+                    <TableRow key={i}>
                       {v.subvragen?.map((s) => (
-                        <td key={s.id}>
+                        <TableCell key={s.id}>
                           {inputVoor(s, String(r[s.id] ?? ""), (val) => setRijVeld(v.id, i, s.id, val))}
-                        </td>
+                        </TableCell>
                       ))}
-                      <td><button onClick={() => verwijderRij(v.id, i)} title="Rij verwijderen">✕</button></td>
-                    </tr>
+                      <TableCell>
+                        <SubtleButton onClick={() => verwijderRij(v.id, i)} title="Rij verwijderen">
+                          ✕
+                        </SubtleButton>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-              <button onClick={() => voegRijToe(v.id)}>+ Regel toevoegen</button>
+                </TableBody>
+              </Table>
+              <SecondaryActionButton onClick={() => voegRijToe(v.id)}>+ Regel toevoegen</SecondaryActionButton>
             </div>
           );
         }
 
         return (
           <div className="veld" key={v.id}>
-            <label htmlFor={v.id}>{v.label}{v.verplicht ? " *" : ""}</label>
-            {inputVoor(v, String(antwoorden[v.id] ?? ""), (val) => setVeld(v.id, val))}
+            <FormLabel htmlFor={v.id}>{v.label}{v.verplicht ? " *" : ""}</FormLabel>
+            {inputVoor(v, String(antwoorden[v.id] ?? ""), (val) => setVeld(v.id, val), v.id)}
             {foutVoor(v.id) && <span className="muted" style={{ color: "#b3261e" }}>{foutVoor(v.id)}</span>}
           </div>
         );
@@ -260,20 +290,25 @@ function AanvraagFormulier({ type, onTerug }: { type: string; onTerug: () => voi
         </div>
       )}
 
-      <h3 style={{ fontSize: "0.95rem" }}>Bijlagen</h3>
+      <Heading3>Bijlagen</Heading3>
       <ul>
         {aanvraag.bijlagen.map((b) => (
           <li key={b.id}>
-            {b.bestandsnaam} ({b.grootte} bytes) <button onClick={() => verwijderBijlage(b)}>verwijderen</button>
+            {b.bestandsnaam} ({b.grootte} bytes){" "}
+            <SubtleButton onClick={() => verwijderBijlage(b)}>verwijderen</SubtleButton>
           </li>
         ))}
       </ul>
       <input ref={fileRef} type="file" onChange={uploadBijlage} />
 
       <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
-        <button onClick={bewaar}>Concept opslaan</button>
-        <button className="primair" disabled={!eval_?.indienbaar} onClick={() => indienen(false)}>Indienen</button>
-        <button className="primair" disabled={!eval_?.indienbaar} onClick={() => indienen(true)}>Ondertekenen met DigiD</button>
+        <SecondaryActionButton onClick={bewaar}>Concept opslaan</SecondaryActionButton>
+        <PrimaryActionButton disabled={!eval_?.indienbaar} onClick={() => indienen(false)}>
+          Indienen
+        </PrimaryActionButton>
+        <PrimaryActionButton disabled={!eval_?.indienbaar} onClick={() => indienen(true)}>
+          Ondertekenen met DigiD
+        </PrimaryActionButton>
       </div>
       <p className="muted">
         Dit formulier is volledig opgebouwd uit de X-Works-template (wiz-vltmpl00-getocc). Validatie en

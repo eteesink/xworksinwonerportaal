@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: vs-inwonerportaal:0.1.0
+    image: vs-inwonerportaal:0.2.0
     container_name: vs-inwonerportaal
     ports:
       - "10040:10040"
@@ -13,4 +13,11 @@ services:
       # Zet op 'xworks' zodra de echte koppeling is gebouwd (en geef dan de
       # X-Works endpoint-config mee via extra environment-variabelen).
       SPRING_PROFILES_ACTIVE: "stub"
+      # Vertaalstore (i18n) buiten de container, zodat beheer-edits herbouw overleven.
+      INWONERPORTAAL_I18N_STORE_FILE: "/data/i18n-store.json"
+    volumes:
+      - i18n-data:/data
     restart: unless-stopped
+
+volumes:
+  i18n-data:

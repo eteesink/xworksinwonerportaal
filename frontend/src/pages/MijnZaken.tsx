@@ -1,4 +1,14 @@
 import { useEffect, useState } from "react";
+import {
+  Heading2,
+  Paragraph,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "@utrecht/component-library-react";
 import { api } from "../api/client";
 import type { Zaak } from "../types";
 
@@ -11,34 +21,34 @@ export default function MijnZaken() {
   }, []);
 
   if (fout) return <div className="melding fout">{fout}</div>;
-  if (!zaken) return <p className="muted">Zaken laden…</p>;
+  if (!zaken) return <Paragraph>Zaken laden…</Paragraph>;
 
   return (
     <div className="kaart">
-      <h2>Mijn zaken</h2>
+      <Heading2>Mijn zaken</Heading2>
       {zaken.length === 0 ? (
-        <p className="muted">U heeft geen lopende zaken.</p>
+        <Paragraph>U heeft geen lopende zaken.</Paragraph>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Zaaknummer</th>
-              <th>Omschrijving</th>
-              <th>Status</th>
-              <th>Startdatum</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderCell>Zaaknummer</TableHeaderCell>
+              <TableHeaderCell>Omschrijving</TableHeaderCell>
+              <TableHeaderCell>Status</TableHeaderCell>
+              <TableHeaderCell>Startdatum</TableHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {zaken.map((z) => (
-              <tr key={z.zaaknummer}>
-                <td>{z.zaaknummer}</td>
-                <td>{z.omschrijving}</td>
-                <td>{z.status}</td>
-                <td>{z.startdatum}</td>
-              </tr>
+              <TableRow key={z.zaaknummer}>
+                <TableCell>{z.zaaknummer}</TableCell>
+                <TableCell>{z.omschrijving}</TableCell>
+                <TableCell>{z.status}</TableCell>
+                <TableCell>{z.startdatum}</TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       )}
       <p className="muted">Inzage in zaken/dossiers uit X-Works (zaakgericht werken, ZS/ZKN).</p>
     </div>

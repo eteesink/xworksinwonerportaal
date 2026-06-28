@@ -1,0 +1,23 @@
+{
+  "nav.home": "Home",
+  "nav.plannen": "Mijn plannen",
+  "nav.gegevens": "Gegevens",
+  "nav.berichten": "Berichten",
+  "header.language": "Taal",
+  "header.loggedInDemo": "Ingelogd via DigiD · demo",
+  "breadcrumb.home": "Home",
+  "home.welcomeTitle": "Welkom in het inwonerportaal",
+  "home.welcomeBody": "Bekijk uw plannen, gegevens en berichten. U bent ingelogd via DigiD.",
+  "home.quickTo": "Snel naar",
+  "plannen.title": "Mijn plannen",
+  "plannen.soon": "De plan-schermen (Plan → Hoofddoelen → Subdoelen → Acties, met Afspraken) volgen in fase 2 van de Verius-herbouw.",
+  "berichten.title": "Berichten",
+  "berichten.soon": "Tweerichtingscommunicatie met de gemeente volgt in een latere fase.",
+  "gegevens.mijnGegevens": "Mijn gegevens",
+  "gegevens.contactgegevens": "Contactgegevens",
+  "gegevens.aanvraagIndienen": "Aanvraag indienen",
+  "gegevens.mijnZaken": "Mijn zaken",
+  "footer.tagline": "Inwonerportaal · demo",
+  "taal.opgeslagen": "Taalvoorkeur opgeslagen",
+  "taal.opslaanMislukt": "Taalvoorkeur kon niet worden opgeslagen"
+}
